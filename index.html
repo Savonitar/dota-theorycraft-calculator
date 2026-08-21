@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dota Theorycraft Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <h1>Dota Theorycraft</h1>
+          <span id="heroSubtitle">Damage model</span>
+        </div>
+        <select id="heroSelect" aria-label="Hero">
+          <option value="lina">Lina</option>
+          <option value="zeus">Zeus</option>
+          <option value="storm">Storm Spirit</option>
+        </select>
+      </header>
+
+      <section class="controls" aria-label="Damage inputs">
+        <label class="field">
+          <span>Level</span>
+          <input id="heroLevel" type="number" min="1" max="30" step="1" value="7">
+        </label>
+        <label class="field">
+          <span>Spell amp</span>
+          <input id="spellAmp" type="number" min="-100" max="500" step="0.1" value="0">
+        </label>
+        <label class="field">
+          <span>Magic resist</span>
+          <input id="magicResistance" type="number" min="-100" max="100" step="0.1" value="25">
+        </label>
+        <label class="field">
+          <span>Incoming</span>
+          <input id="incomingAmp" type="number" min="-100" max="500" step="0.1" value="0">
+        </label>
+        <label class="field">
+          <span>Dagon</span>
+          <input id="dagonLevel" type="number" min="0" max="5" step="1" value="0">
+        </label>
+      </section>
+
+      <section id="heroOptions" class="hero-options" aria-label="Hero options"></section>
+
+      <section class="totals" aria-label="Damage totals">
+        <div class="total-head">
+          <span>Target</span>
+          <span>Instant</span>
+          <span>Full</span>
+        </div>
+        <div class="total-row total-row-primary">
+          <span id="selectedResistLabel">MR 25%</span>
+          <strong id="instantDamage">0</strong>
+          <strong id="fullDamage">0</strong>
+        </div>
+        <div id="defaultDamageRow" class="total-row">
+          <span>MR 25%</span>
+          <strong id="defaultInstantDamage">0</strong>
+          <strong id="defaultFullDamage">0</strong>
+        </div>
+        <div id="aghanimDamageRow" class="total-row">
+          <span>Aghanim</span>
+          <strong id="aghanimInstantDamage">0</strong>
+          <strong id="aghanimFullDamage">0</strong>
+        </div>
+      </section>
+
+      <section class="breakdown" aria-label="Damage breakdown">
+        <div class="breakdown-head">
+          <span>Source</span>
+          <span>Rank</span>
+          <span>Instant</span>
+          <span>Full</span>
+        </div>
+        <div id="damageRows" class="damage-rows"></div>
+      </section>
+
+      <footer id="modelNote" class="model-note"></footer>
+    </main>
+
+    <script src="src/damage-model.js"></script>
+    <script src="src/ui.js"></script>
+  </body>
+</html>

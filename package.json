@@ -1,0 +1,21 @@
+{
+  "name": "dota-theorycraft-calculator",
+  "version": "1.0.0",
+  "description": "Desktop damage calculator for Dota 2 theorycrafting",
+  "productName": "Dota Theorycraft Calculator",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "check": "node --check main.js && node --check src/damage-model.js && node --check src/ui.js && node --check src/window-options.js && node --check scripts/package-win.js && node --test",
+    "package:win": "node scripts/package-win.js"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "electron": "^43.4.0"
+  },
+  "author": "Savonitar"
+}

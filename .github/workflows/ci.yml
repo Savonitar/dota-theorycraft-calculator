@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22.12.0"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
+
+  package-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22.12.0"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
+
+      - name: Package Windows build
+        run: npm run package:win
+
+      - name: Verify Windows package contents
+        shell: pwsh
+        run: |
+          $root = "dist/dota-theorycraft-calculator-win32-x64"
+          $required = @(
+            "$root/dota-theorycraft-calculator.exe",
+            "$root/resources/app/index.html",
+            "$root/resources/app/main.js",
+            "$root/resources/app/styles.css",
+            "$root/resources/app/src/damage-model.js",
+            "$root/resources/app/src/ui.js",
+            "$root/resources/app/src/window-options.js",
+            "$root/resources/app/package.json",
+            "$root/README.txt"
+          )
+
+          foreach ($file in $required) {
+            if (-not (Test-Path $file)) {
+              throw "Missing packaged file: $file"
+            }
+          }
+
+          $package = Get-Content "$root/resources/app/package.json" | ConvertFrom-Json
+          if ($package.main -ne "main.js") {
+            throw "Packaged package.json has an unexpected main entry."
+          }
