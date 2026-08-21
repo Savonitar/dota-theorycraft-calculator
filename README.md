@@ -9,6 +9,7 @@ Dota Theorycraft Calculator is a small desktop calculator for Dota 2 damage esti
 - Baseline total for 25% magic resistance.
 - Lina Aghanim's Scepter / Flame Cloak projection.
 - Lina Ethereal Blade option with estimated Ether Blast damage.
+- Lina's level 25 +1s Slow Burn talent.
 - Dagon level input from 0 to 5.
 - Damage rune checkbox using a separate spell amplification bonus.
 - Optional Zeus target HP input for Static Field estimates.

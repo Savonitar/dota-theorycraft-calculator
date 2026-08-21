@@ -120,6 +120,10 @@
           <span>LSA +110</span>
         </label>
         <label class="check-field">
+          <input id="linaTalentBurn" type="checkbox">
+          <span>Burn +1s</span>
+        </label>
+        <label class="check-field">
           <input id="linaEtherealBlade" type="checkbox">
           <span>E-Blade</span>
         </label>
@@ -129,8 +133,11 @@
         </label>
       `;
       const lsaTalent = document.getElementById('linaTalentLsa');
+      const burnTalent = document.getElementById('linaTalentBurn');
       lsaTalent.checked = state.level >= 15 && state.linaTalentLsa;
       lsaTalent.disabled = state.level < 15;
+      burnTalent.checked = state.level >= 25 && state.linaTalentBurn;
+      burnTalent.disabled = state.level < 25;
       document.getElementById('linaEtherealBlade').checked = state.linaEtherealBlade;
       document.getElementById('damageRune').checked = state.damageRune;
       return;
@@ -183,6 +190,10 @@
 
     if (target.id === 'linaTalentLsa') {
       nextState.linaTalentLsa = target.checked;
+    }
+
+    if (target.id === 'linaTalentBurn') {
+      nextState.linaTalentBurn = target.checked;
     }
 
     if (target.id === 'linaEtherealBlade') {

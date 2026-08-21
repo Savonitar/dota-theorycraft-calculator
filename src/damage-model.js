@@ -10,6 +10,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function buildDamageModel() {
   const DEFAULT_MAGIC_RESISTANCE = 25;
   const LINA_SLOW_BURN_MULTIPLIER = 0.64;
+  const LINA_SLOW_BURN_TALENT_MULTIPLIER = 0.80;
   const AGHANIM_FLAME_CLOAK_SPELL_AMP = 35;
   const DAMAGE_RUNE_SPELL_AMP = 15;
   const ETHEREAL_BLADE_MAGIC_AMP = 30;
@@ -83,6 +84,7 @@
     damageRune: false,
     extraSpellAmp: 0,
     linaTalentLsa: false,
+    linaTalentBurn: false,
     linaEtherealBlade: false,
     linaEbladeAttributes: 0,
     zeusTalentUlt: false,
@@ -203,11 +205,15 @@
 
   function linaRow(title, rank, baseImpactDamage, state, talentDamage) {
     const impactDamage = rank > 0 ? baseImpactDamage + (talentDamage || 0) : 0;
-    const burnDamage = impactDamage * LINA_SLOW_BURN_MULTIPLIER;
+    const hasBurnTalent = state.level >= 25 && state.linaTalentBurn;
+    const burnMultiplier = hasBurnTalent
+      ? LINA_SLOW_BURN_TALENT_MULTIPLIER
+      : LINA_SLOW_BURN_MULTIPLIER;
+    const burnDamage = impactDamage * burnMultiplier;
     const rawTotal = rank > 0 ? impactDamage + burnDamage : 0;
     const impactText = talentDamage ? `${baseImpactDamage} + ${talentDamage}` : formatBase(impactDamage);
     const detail = rank > 0
-      ? `level ${rank}: ${impactText} impact + 64% burn`
+      ? `level ${rank}: ${impactText} impact + ${hasBurnTalent ? '80% burn (+1s talent)' : '64% burn'}`
       : 'not learned';
 
     return makeTimedMagicRow(title, rank, impactDamage, rawTotal, detail, state);
@@ -379,6 +385,7 @@
       damageRune: Boolean(merged.damageRune),
       extraSpellAmp: clamp(toNumber(merged.extraSpellAmp, DEFAULT_STATE.extraSpellAmp), -100, 500),
       linaTalentLsa: Boolean(merged.linaTalentLsa),
+      linaTalentBurn: Boolean(merged.linaTalentBurn),
       linaEtherealBlade: Boolean(merged.linaEtherealBlade),
       linaEbladeAttributes: clamp(toNumber(merged.linaEbladeAttributes, DEFAULT_STATE.linaEbladeAttributes), 0, 10000),
       zeusTalentUlt: Boolean(merged.zeusTalentUlt),

@@ -67,6 +67,23 @@ test('calculates Lina instant and full combo damage separately', () => {
   assert.equal(total(result.rows, 'full'), 1309);
 });
 
+test("applies Lina's level 25 +1s Slow Burn talent only when available", () => {
+  const beforeLevel25 = DotaTheorycraft.calculateHero(DotaTheorycraft.normalizeState({
+    hero: 'lina',
+    level: 24,
+    linaTalentBurn: true
+  }));
+  const atLevel25 = DotaTheorycraft.calculateHero(DotaTheorycraft.normalizeState({
+    hero: 'lina',
+    level: 25,
+    linaTalentBurn: true
+  }));
+
+  assert.equal(beforeLevel25.rows[0].defaultFull, 301);
+  assert.equal(atLevel25.rows[0].defaultFull, 331);
+  assert.match(atLevel25.rows[0].detail, /80% burn \(\+1s talent\)/);
+});
+
 test('includes Dagon item damage in Lina totals', () => {
   const state = DotaTheorycraft.normalizeState({
     hero: 'lina',
